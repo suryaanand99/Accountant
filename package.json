@@ -1,0 +1,28 @@
+{
+  "name": "accountant-backend",
+  "version": "1.0.0",
+  "description": "api da..",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suryaanand99/Accountant.git"
+  },
+  "author": "Surya Anand,Sundeep Charan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/suryaanand99/Accountant/issues"
+  },
+  "homepage": "https://github.com/suryaanand99/Accountant#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^8.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.6"
+  }
+}
