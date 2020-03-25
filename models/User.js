@@ -53,6 +53,26 @@ userSchema.methods = {
   }
 };
 
+//custom named modern methods for database queries
+userSchema.statics = {
+  findByEmailAndPassword: async function(email, password) {
+    try {
+      const user = await User.findOne({ email });
+      if (!user) {
+        throw new Error("Unauthorized access");
+      }
+
+      const isMatch = await bcryptjs.compare(password, user.password);
+      if (!isMatch) {
+        throw new Error("Unauthorized access");
+      }
+      return user;
+    } catch (err) {
+      throw err;
+    }
+  }
+};
+
 userSchema.pre("save", async function(next) {
   const user = this;
   try {
