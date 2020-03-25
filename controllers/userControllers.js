@@ -28,20 +28,30 @@ module.exports = {
       const { email, password } = req.body;
       const user = await User.findByEmailAndPassword(email, password);
       const token = await user.generateToken();
-      res
-        .status(200)
-        .json({
-          statusCode: 200,
-          user,
-          accessToken: token,
-          expiresIn: "3 days"
-        });
+      res.status(200).json({
+        statusCode: 200,
+        user,
+        accessToken: token,
+        expiresIn: "3 days"
+      });
     } catch (err) {
       console.log(err.message);
       if (err.message == "Unauthorized access")
         return res
           .status(401)
           .json({ statusCode: 401, message: "Unauthorized access" });
+      res.status(500).json({ statusCode: 500, message: "Server Error" });
+    }
+  },
+
+  logoutUser: async (req, res) => {
+    try {
+      const user = req.user;
+      user.accessToken = null;
+      await user.save();
+      res.status(202).json({ statusCode: 202, message: "logout successfully" });
+    } catch (err) {
+      console.log(err);
       res.status(500).json({ statusCode: 500, message: "Server Error" });
     }
   }
