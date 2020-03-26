@@ -23,7 +23,7 @@ const authenticate = async (req, res, next) => {
     if (err.message == "Unauthorized access")
       return res
         .status(401)
-        .json({ statusCode: 401, message: "Unauthorized access - " });
+        .json({ statusCode: 401, message: "Unauthorized access" });
     res.status(500).json({ statusCode: 500, message: "Server Error" });
   }
 };
