@@ -19,8 +19,12 @@ const authenticate = async (req, res, next) => {
     req.user = user;
     next();
   } catch (err) {
-    console.log(err.message);
-    if (err.message == "Unauthorized access")
+    if (
+      err.message === "Unauthorized access" ||
+      err.message === "invalid token" ||
+      err.message === "token expired" ||
+      err.message === "jwt malformed"
+    )
       return res
         .status(401)
         .json({ statusCode: 401, message: "Unauthorized access" });

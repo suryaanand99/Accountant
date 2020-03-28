@@ -10,7 +10,7 @@ const accountSchema = new Schema(
     },
     dailySummary: [
       {
-        createdAt: {
+        dailyCreatedAt: {
           type: String,
           required: true,
           unique: true,
@@ -32,10 +32,14 @@ const accountSchema = new Schema(
     ],
     monthlySummary: [
       {
-        createdAt: {
+        monthlyCreatedAt: {
           type: String,
           required: true,
           trim: true
+        },
+        lastUpdated: {
+          type: String,
+          required: true
         },
         profit: {
           type: Number,
@@ -55,6 +59,10 @@ const accountSchema = new Schema(
       {
         year: {
           type: Number,
+          required: true
+        },
+        lastUpdated: {
+          type: String,
           required: true
         },
         profit: {

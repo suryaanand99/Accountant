@@ -1,12 +1,5 @@
 const Account = require("../models/Account");
-
-const todaysDate = () => {
-  let day = new Date().getDate();
-  let month = new Date().getMonth() + 1;
-  month = month < 10 ? `0${month}` : month;
-  day = day < 10 ? `0${day}` : day;
-  return `${day}-${month}-${new Date().getFullYear()}`;
-};
+const { todaysDate, alterDailySummary, alterMYSummary } = require("../utils");
 
 module.exports = {
   createAccount: async (req, res) => {
@@ -25,7 +18,7 @@ module.exports = {
     const user = req.user;
     try {
       const { profit, expenditure, income } = req.body;
-      console.log(profit, expenditure, income, typeof expenditure);
+      // Testing data
       if (
         profit === undefined ||
         expenditure === undefined ||
@@ -35,23 +28,35 @@ module.exports = {
           .status(400)
           .json({ statusCode: 400, message: "Details missing" });
       const account = await Account.findOne({ user: user._id });
-      const dsIndex = account.dailySummary.findIndex(
-        ds => ds.createdAt === todaysDate()
-      );
 
-      const dailySummary = {
-        createdAt: todaysDate(),
-        profit,
-        expenditure,
-        income
-      };
+      // Destructuring monthly, yearly, daily.
+      let { dailySummary, monthlySummary, yearlySummary } = account;
 
-      if (dsIndex === -1) account.dailySummary.push(dailySummary);
-      else account.dailySummary[dsIndex] = dailySummary;
+      // Monthly summary
+      monthlySummary = [
+        ...alterMYSummary(monthlySummary, "month", dailySummary, {
+          profit,
+          income,
+          expenditure
+        })
+      ];
+      // Yearly summary
+      yearlySummary = [
+        ...alterMYSummary(yearlySummary, "year", dailySummary, {
+          profit,
+          income,
+          expenditure
+        })
+      ];
+      // Daily summary
+      dailySummary = [
+        ...alterDailySummary(dailySummary, { profit, income, expenditure })
+      ];
+
       await account.save();
       return res.status(202).json({ statusCode: 202, account });
     } catch (err) {
-      console.log(err.message);
+      console.log(err);
       res.status(500).json({ statusCode: 500, message: "Server Error" });
     }
   }
