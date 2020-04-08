@@ -6,84 +6,83 @@ const accountSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
-      ref: "User"
+      ref: "User",
     },
     dailySummary: [
       {
         dailyCreatedAt: {
           type: String,
           required: true,
-          unique: true,
-          trim: true
+          trim: true,
         },
         profit: {
           type: Number,
-          required: true
+          required: true,
         },
         expenditure: {
           type: Number,
-          required: true
+          required: true,
         },
         income: {
           type: Number,
-          required: true
-        }
-      }
+          required: true,
+        },
+      },
     ],
     monthlySummary: [
       {
         monthlyCreatedAt: {
           type: String,
           required: true,
-          trim: true
+          trim: true,
         },
         lastUpdated: {
           type: String,
-          required: true
+          required: true,
         },
         profit: {
           type: Number,
-          required: true
+          required: true,
         },
         expenditure: {
           type: Number,
-          required: true
+          required: true,
         },
         income: {
           type: Number,
-          required: true
-        }
-      }
+          required: true,
+        },
+      },
     ],
     yearlySummary: [
       {
         year: {
           type: Number,
-          required: true
+          required: true,
         },
         lastUpdated: {
           type: String,
-          required: true
+          required: true,
         },
         profit: {
           type: Number,
-          required: true
+          required: true,
         },
         expenditure: {
           type: Number,
-          required: true
+          required: true,
         },
         income: {
           type: Number,
-          required: true
-        }
-      }
-    ]
+          required: true,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );
 
-accountSchema.methods.toJSON = function() {
+accountSchema.methods.toJSON = function () {
   const account = this.toObject();
   delete account.__v;
   return account;
